@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="results-page">
+    <div class="container">
+        <div class="confetti-container"></div>
+        
+        <h1 class="page-title">Hasil Analisis Kulit</h1>
+        <p class="page-subtitle">Pada: {{ scan.scan_date[:16].replace('T', ' ') }}</p>
+
+        <div class="results-grid">
+            <!-- Conditions Detected -->
+            <div class="results-card conditions-section">
+                <h2>🎯 Kondisi Terdeteksi</h2>
+                <div class="conditions-list">
+                    {% for key, condition in conditions.items() %}
+                    <div class="condition-item">
+                        <div class="condition-header">
+                            <h3>{{ condition.name }}</h3>
+                            <span class="confidence {% if condition.confidence >= 80 %}high{% elif condition.confidence >= 60 %}medium{% else %}low{% endif %}">
+                                {{ condition.confidence }}%
+                            </span>
+                        </div>
+                        <p>{{ condition.description }}</p>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill {% if condition.confidence >= 80 %}high{% elif condition.confidence >= 60 %}medium{% else %}low{% endif %}" 
+                                 style="width: {{ condition.confidence }}%"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Care Recommendations -->
+            <div class="results-card recommendations-section">
+                <h2>💡 Yang Harus Kamu Lakukan</h2>
+                {% for condition, steps in recommendations.items() %}
+                <div class="routine-block">
+                    <h3>{{ conditions[condition].name }}</h3>
+                    <ol class="routine-steps">
+                        {% for step in steps %}
+                        <li>
+                            <strong>{{ step.step_title }}</strong>
+                            <p>{{ step.step_description }}</p>
+                        </li>
+                        {% endfor %}
+                    </ol>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Product Recommendations -->
+            <div class="results-card products-section">
+                <h2>🛒 Produk Rekomendasi</h2>
+                <div class="products-grid">
+                    {% for product in products %}
+                    <div class="product-card">
+                        <div class="product-image">
+                            <div class="product-placeholder">
+                                {{ product.brand[:2] }}{{ product.name[:2] }}
+                            </div>
+                            {% if product.bpom_verified %}
+                            <span class="bpom-badge">✅ BPOM</span>
+                            {% endif %}
+                        </div>
+                        <div class="product-info">
+                            <h3>{{ product.name }}</h3>
+                            <p class="product-brand">{{ product.brand }}</p>
+                            <div class="product-rating">
+                                {% for i in range(1, 6) %}
+                                    {% if i <= product.avg_rating %}
+                                    <span class="star filled">★</span>
+                                    {% else %}
+                                    <span class="star">☆</span>
+                                    {% endif %}
+                                {% endfor %}
+                                <span class="review-count">({{ product.review_count }} ulasan)</span>
+                            </div>
+                            <p class="product-price">Rp {{ "{:,}".format(product.price).replace(",", ".") }}</p>
+                            <div class="product-bpom">
+                                <small>BPOM: {{ product.bpom_number }}</small>
+                            </div>
+                            <a href="https://shopee.co.id/search?keyword={{ product.brand }} {{ product.name }}" 
+                               target="_blank" class="btn btn-outline btn-small">
+                                🛒 Lihat di Marketplace
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="disclaimer-box">
+            <p>
+                ⚠️ <strong>Penting:</strong> Hasil analisis ini bersifat indikatif dan tidak menggantikan 
+                diagnosis medis profesional. Jika kondisi kulit Anda serius atau memburuk, silakan 
+                konsultasi dengan dermatologis.
+            </p>
+        </div>
+
+        <div class="actions">
+            <a href="/camera" class="btn btn-primary">📷 Scan Lagi</a>
+            <button class="btn btn-secondary" onclick="shareResult()">📤 Bagikan Hasil</button>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function shareResult() {
+    const text = 'Hasil Analisis Kulit dari WajahKu.id - Cek kulitmu sekarang!';
+    if (navigator.share) {
+        navigator.share({title: 'WajahKu.id', text: text, url: window.location.href});
+    } else {
+        navigator.clipboard.writeText(window.location.href);
+        alert('Link disalin ke clipboard!');
+    }
+}
+</script>
+{% endblock %}

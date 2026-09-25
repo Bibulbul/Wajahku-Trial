@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="admin-page">
+    <div class="container">
+        <h1 class="page-title">Admin Dashboard</h1>
+
+        <div class="admin-grid">
+            <!-- Stats Overview -->
+            {% if not view %}
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📸</div>
+                    <div class="stat-value">{{ total_scans }}</div>
+                    <div class="stat-label">Total Scan</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🧴</div>
+                    <div class="stat-value">{{ total_products }}</div>
+                    <div class="stat-label">Total Produk</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-value">{{ total_reviews }}</div>
+                    <div class="stat-label">Total Ulasan</div>
+                </div>
+            </div>
+
+            <!-- Condition Distribution -->
+            <div class="results-card">
+                <h2>📊 Distribusi Kondisi Kulit</h2>
+                <div class="condition-chart">
+                    {% for cond, count in condition_counts.items() %}
+                    <div class="chart-bar">
+                        <div class="chart-label">{{ cond }}</div>
+                        <div class="chart-fill" style="width: {{ (count / total_scans * 100) if total_scans > 0 else 0 }}%"></div>
+                        <div class="chart-value">{{ count }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Products Table -->
+            {% if view == 'products' %}
+            <div class="results-card">
+                <div class="section-header">
+                    <h2>🧴 Daftar Produk</h2>
+                    <a href="/admin/products/new" class="btn btn-primary">+ Tambah Produk</a>
+                </div>
+                
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Nama Produk</th>
+                            <th>Brand</th>
+                            <th>BPOM</th>
+                            <th>Verifikasi</th>
+                            <th>Ulasan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                        <tr>
+                            <td><strong>{{ product.name }}</strong></td>
+                            <td>{{ product.brand }}</td>
+                            <td><small>{{ product.bpom_number }}</small></td>
+                            <td>
+                                {% if product.bpom_verified %}
+                                <span class="badge badge-success">✅ Terverifikasi</span>
+                                {% else %}
+                                <span class="badge badge-warning">⏳ Pending</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ product.review_count }}</td>
+                            <td>
+                                <a href="/admin/products/{{ product.id }}/edit" class="btn btn-small btn-secondary">✏️ Edit</a>
+                                <form action="/admin/products/{{ product.id }}/delete" method="POST" style="display:inline;" 
+                                      onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
+                                    <button type="submit" class="btn btn-small btn-danger">🗑️ Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}

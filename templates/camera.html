@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="camera-page">
+    <div class="container">
+        <h1 class="page-title">Upload Foto Wajah</h1>
+        <p class="page-subtitle">Pilih foto wajah Anda untuk dianalisis oleh AI kami</p>
+
+        <div class="upload-section">
+            <div class="camera-container">
+                <video id="video" autoplay playsinline style="display:none;"></video>
+                <canvas id="canvas" style="display:none;"></canvas>
+                <div id="preview" class="preview-container">
+                    <div class="preview-placeholder">
+                        <span class="preview-icon">📷</span>
+                        <p>Upload atau ambil foto wajah</p>
+                    </div>
+                </div>
+                <img id="previewImage" class="preview-image" style="display:none;">
+            </div>
+
+            <div class="camera-controls">
+                <button type="button" id="startCamera" class="btn btn-secondary">
+                    📱 Nyalakan Kamera
+                </button>
+                <button type="button" id="capture" class="btn btn-primary" style="display:none;">
+                    📸 Ambil Foto
+                </button>
+                <button type="button" id="stopCamera" class="btn btn-danger" style="display:none;">
+                    ⛔ Matikan Kamera
+                </button>
+            </div>
+
+            <div class="upload-controls">
+                <label for="fileInput" class="btn btn-outline">
+                    📁 Pilih dari Galeri
+                </label>
+                <input type="file" id="fileInput" accept="image/*" style="display:none;">
+            </div>
+
+            <div class="consent-check">
+                <input type="checkbox" id="consent" required>
+                <label for="consent">Saya setuju foto saya dianalisis untuk keperluan deteksi kulit</label>
+            </div>
+
+            <button type="button" id="analyzeBtn" class="btn btn-primary btn-large" disabled>
+                🔍 Analisis Sekarang
+            </button>
+        </div>
+    </div>
+</section>
+
+<div id="loadingOverlay" class="loading-overlay" style="display:none;">
+    <div class="loading-content">
+        <div class="spinner"></div>
+        <p class="loading-text">🤖 Menganalisis kulit Anda...</p>
+        <p class="loading-subtext">AI kami sedang memproses gambar</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}
