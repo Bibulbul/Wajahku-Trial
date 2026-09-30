@@ -45,7 +45,7 @@ const Login = () => {
       <div className="login-container">
         <div className="login-header">
           <h1>WajahKu.id</h1>
-          <p>Analisis Kulit Wajah dengan AI</p>
+          <p>Sistem Analisis Kulit Wajah</p>
         </div>
 
         <form className="login-form" onSubmit={handleSubmit}>
