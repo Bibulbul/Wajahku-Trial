@@ -7,7 +7,7 @@ const UserHome = () => {
       <section className="hero">
         <div className="container">
           <h1>Kenali Kondisi Kulit Wajahmu</h1>
-          <p>Dapatkan analisis kulit wajah dengan teknologi AI dan rekomendasi produk yang tepat</p>
+          <p>Dapatkan analisis kondisi kulit wajah serta rekomendasi produk perawatan yang tepat</p>
           <Link to="/user/camera" className="btn-hero">
             Mulai Scan Sekarang
           </Link>
@@ -25,8 +25,8 @@ const UserHome = () => {
             </div>
             <div className="step">
               <div className="step-number">2</div>
-              <h3>AI Analisis</h3>
-              <p>Sistem AI menganalisis kondisi kulit wajahmu secara detail</p>
+              <h3>Analisis Kulit</h3>
+              <p>Sistem kami menganalisis kondisi kulit wajahmu secara menyeluruh</p>
             </div>
             <div className="step">
               <div className="step-number">3</div>
@@ -41,15 +41,15 @@ const UserHome = () => {
         <div className="container">
           <div className="feature-grid">
             <div className="feature-card">
-              <h3>✓ Analisis Akurat</h3>
+              <h3>Analisis Akurat</h3>
               <p>Deteksi berbagai kondisi kulit dengan tingkat akurasi tinggi</p>
             </div>
             <div className="feature-card">
-              <h3>✓ Produk Terverifikasi</h3>
+              <h3>Produk Terverifikasi</h3>
               <p>Rekomendasi produk dengan nomor BPOM resmi</p>
             </div>
             <div className="feature-card">
-              <h3>✓ Riwayat Scan</h3>
+              <h3>Riwayat Scan</h3>
               <p>Pantau perkembangan kondisi kulitmu dari waktu ke waktu</p>
             </div>
           </div>

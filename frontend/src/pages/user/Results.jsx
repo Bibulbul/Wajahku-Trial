@@ -101,7 +101,7 @@ const Results = () => {
                   <p className="brand">{product.brand}</p>
                   <p className="price">Rp {product.price.toLocaleString('id-ID')}</p>
                   <div className="product-meta">
-                    <span className="bpom">✓ BPOM {product.bpom_number}</span>
+                    <span className="bpom">BPOM {product.bpom_number}</span>
                     {product.avg_rating > 0 && (
                       <span className="rating">★ {product.avg_rating.toFixed(1)}</span>
                     )}
